@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Single source of truth for routing in your application",
   "repository": "https://github.com/Tyrrrz/route-descriptor",
-  "author": "Alexey 'Tyrrrz' Golub",
+  "author": {
+    "name": "Alexey Golub",
+    "url": "https://tyrrrz.me"
+  },
   "license": "MIT",
   "keywords": [
     "route",
