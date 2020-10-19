@@ -17,9 +17,10 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: 12
+          registry-url: https://registry.npmjs.org
 
       - name: Pull dependencies
-        run: npm install
+        run: npm ci --no-audit
 
       - name: Build
         run: npm run build

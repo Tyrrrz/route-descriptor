@@ -42,8 +42,7 @@
   "scripts": {
     "build": "rimraf ./build && tsc -p tsconfig.build.esm.json && tsc -p tsconfig.build.cjs.json",
     "test": "jest",
-    "lint": "eslint */**/*.{js,jsx,ts,tsx} --fix",
-    "prepare": "npm run build"
+    "lint": "eslint */**/*.{js,jsx,ts,tsx} --fix"
   },
   "jest": {
     "transform": {
