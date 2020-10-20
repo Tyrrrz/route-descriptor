@@ -19,7 +19,7 @@
   "main": "./build/cjs/index.js",
   "types": "./build/esm/index.d.ts",
   "files": [
-    "./build"
+    "build"
   ],
   "dependencies": {
     "path-to-regexp": "^6.2.0"
