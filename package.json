@@ -1,6 +1,6 @@
 {
   "name": "route-descriptor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Single source of truth for routing in your application",
   "repository": "https://github.com/Tyrrrz/route-descriptor",
   "author": {
