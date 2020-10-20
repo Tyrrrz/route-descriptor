@@ -1,13 +1,11 @@
 {
+  "ignorePatterns": ["node_modules", "build", "coverage"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "project": "./tsconfig.json" },
-  "ignorePatterns": ["node_modules", "build", "coverage"],
-  "plugins": ["import", "eslint-comments", "prettier"],
+  "plugins": ["prettier"],
   "extends": [
     "eslint:recommended",
-    "plugin:eslint-comments/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/typescript",
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
