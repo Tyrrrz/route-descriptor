@@ -44,15 +44,15 @@ export function route(template: string): StaticRouteDescriptor;
 /**
  * Creates a dynamic a route.
  *
- * @param template - route template (e.g. `/products/:id`).
  * @param T - type of the object that represents route parameters.
+ * @param template - route template (e.g. `/products/:id`).
  */
 export function route<T extends ParamsBase>(template: string): DynamicRouteDescriptor<T>;
 
 export function route<T extends ParamsBase>(
   template: string
 ): StaticRouteDescriptor | DynamicRouteDescriptor<T> {
-  // Parse the template and extract route parameters
+  // Parse the template and extract keys
   const templateTokens = parse(template);
 
   const templateKeys = templateTokens

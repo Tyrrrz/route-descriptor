@@ -4,10 +4,11 @@
     "lib": ["esnext"],
     "moduleResolution": "node",
     "strict": true,
-    "declaration": true,
-    "esModuleInterop": true,
+    "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "pretty": true
   },
   "include": ["./src"]
