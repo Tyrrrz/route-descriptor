@@ -67,7 +67,9 @@ export function route<T extends ParamsBase>(
     })
     .filter((key) => !!key);
 
-  const templateResolve = tokensToFunction(templateTokens);
+  const templateResolve = tokensToFunction(templateTokens, {
+    encode: (value) => encodeURIComponent(value)
+  });
 
   // Create the descriptor function
   const descriptor = (params?: T) => {

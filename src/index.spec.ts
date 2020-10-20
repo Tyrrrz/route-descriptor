@@ -9,6 +9,7 @@ interface ProductListParams {
 interface ProductPageParams {
   id: number;
   category: string;
+  color?: string;
   viewFullDetails?: boolean;
 }
 
@@ -18,7 +19,7 @@ interface ProfilePageParams {
 }
 
 describe('route()', () => {
-  it('can generate a URL without parameters if the route is static', () => {
+  it('works without parameters if the route is static', () => {
     // Arrange
     const home = route('/home');
 
@@ -29,7 +30,7 @@ describe('route()', () => {
     expect(url).toBe('/home');
   });
 
-  it('can generate a URL with default parameters if the route has no required parameters', () => {
+  it('works with default parameters if the route has no required parameters', () => {
     // Arrange
     const products = route<ProductListParams>('/products');
 
@@ -40,7 +41,7 @@ describe('route()', () => {
     expect(url).toBe('/products');
   });
 
-  it('can generate a URL with positional parameters', () => {
+  it('works with positional parameters', () => {
     // Arrange
     const product = route<ProductPageParams>('/products/:category/:id');
 
@@ -54,7 +55,7 @@ describe('route()', () => {
     expect(url).toBe('/products/boxes/3');
   });
 
-  it('can generate a URL with query parameters', () => {
+  it('works with query parameters', () => {
     // Arrange
     const product = route<ProductListParams>('/products');
 
@@ -68,7 +69,7 @@ describe('route()', () => {
     expect(url).toBe('/products?page=14&filter=big');
   });
 
-  it('can generate a URL with both positional and query parameters', () => {
+  it('works with both positional and query parameters', () => {
     // Arrange
     const product = route<ProductPageParams>('/products/:category/:id');
 
@@ -76,14 +77,15 @@ describe('route()', () => {
     const url = product({
       id: 3,
       category: 'boxes',
+      color: 'red',
       viewFullDetails: true
     });
 
     // Assert
-    expect(url).toBe('/products/boxes/3?viewFullDetails=true');
+    expect(url).toBe('/products/boxes/3?color=red&viewFullDetails=true');
   });
 
-  it('can generate a URL without some of the optional positional parameters', () => {
+  it('works with some of the optional positional parameters omitted', () => {
     // Arrange
     const profile = route<ProfilePageParams>('/profiles/:id/:name?');
 
@@ -94,6 +96,21 @@ describe('route()', () => {
 
     // Assert
     expect(url).toBe('/profiles/3');
+  });
+
+  it('correctly encodes parameters', () => {
+    // Arrange
+    const product = route<ProductPageParams>('/products/:category/:id');
+
+    // Act
+    const url = product({
+      id: 3,
+      category: 'dogs and cats <3',
+      color: 'black & yellow'
+    });
+
+    // Assert
+    expect(url).toBe('/products/dogs%20and%20cats%20%3C3/3?color=black%20%26%20yellow');
   });
 
   it('can return its template', () => {
