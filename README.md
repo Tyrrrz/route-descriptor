@@ -83,7 +83,7 @@ interface ProfileParams {
 
 const profile = route<ProfileParams>('/profile/:id/:name?');
 
-const href = home({
+const href = profile({
   id: 13
 }); // '/profile/13'
 ```
@@ -135,7 +135,7 @@ function Home() {
     <div>
       <Link to={routes.home()}>Home</Link>
       <Link to={routes.profile({ id: 1, name: 'JohnDoe' })}>My Profile</Link>
-      <Link to={routes.product({ id: 3 })}>Random Product</Link>
+      <Link to={routes.product({ id: 3, showComments: true })}>Random Product</Link>
     </div>
   );
 }
