@@ -14,8 +14,8 @@ This package provides an interface to statically represent routing configuration
 
 ## Features
 
-- Supports both static and dynamic routes
-- Supports both positional and query parameters
+- Supports static and dynamic routes
+- Supports positional and query parameters
 - Parameter validation via TypeScript
 - Works in browser and NodeJS
 
@@ -23,7 +23,7 @@ This package provides an interface to statically represent routing configuration
 
 ### Routes with parameters
 
-The following example creates a route called `product` with expected parameters declared in `ProductParams`. The route itself is a function that can be invoked to resolve the actual URL.
+The following example creates a dynamic route called `product` with expected parameters declared in `ProductParams`. The route itself is a function that can be invoked to resolve the actual URL:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -39,7 +39,7 @@ const href = product({ id: 3 }); // '/products/3'
 
 ### Routes with query parameters
 
-Any parameter that doesn't match with a key in the route template is automatically mapped as a query parameter:
+Any parameters that don't match with keys in the route template are automatically mapped as query parameters:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -59,7 +59,7 @@ const href = product({
 
 ### Routes without parameters
 
-A route can also be defined without parameters:
+You can also create a static route, i.e. such that doesn't expect any parameters. Invoking it simply returns the original template:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -71,7 +71,7 @@ const href = home(); // '/home'
 
 ### Routes with optional positional parameters
 
-Some routes may have optional positional parameters. They need to be marked with the `?` modifier in the template:
+Some routes may have positional parameters which are optional. They need to be marked with the `?` modifier in the template:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -81,28 +81,28 @@ interface ProfileParams {
   name?: string;
 }
 
-const profile = route('/profile/:id/:name?');
+const profile = route<ProfileParams>('/profile/:id/:name?');
 
 const href = home({
   id: 13
 }); // '/profile/13'
 ```
 
-### Retrieving template
+### Retrieving the template
 
-You can get the original template back as well, which may be necessary when plugging `route-descriptor` into a routing library:
+Once the route is created, you can get the original template back too. This may be convenient when plugging `route-descriptor` into a routing library of your choice:
 
 ```ts
 import { route } from 'route-descriptor';
 
-const profile = route('/profile/:id/:name?');
+const profile = route<ProfileParams>('/profile/:id/:name?');
 
 const template = profile.template; // '/profile/:id/:name?'
 ```
 
 ### Combining with `react-router`
 
-It's possible to use `route-descriptor` with pretty much any routing library. For example, here is how to integrate it with [`react-router`](https://github.com/ReactTraining/react-router):
+It's possible to use `route-descriptor` with pretty much any client-side routing library. For example, here is how to integrate it with [`react-router`](https://github.com/ReactTraining/react-router):
 
 ```ts
 // ./src/routes.ts
@@ -161,6 +161,8 @@ export default function App() {
 }
 ```
 
+As you can see, the routes are defined in a single place (the `routes.ts` module) from which they referenced throughout the application. This makes changing the templates and route parameters easy in the future, as you don't have to worry about updating URLs in every anchor tag.
+
 ### TypeScript integration
 
 This package is most useful when paired with TypeScript, as it provides static validation for parameters. For example, all of the following incorrect usages produce errors during compilation:
@@ -168,15 +170,11 @@ This package is most useful when paired with TypeScript, as it provides static v
 ```ts
 import { route } from 'route-descriptor';
 
-// Static route cannot accept parameters
 const home = route('/home');
-home({ id: 5 }); // <- error
+home({ id: 5 }); // <- error (static route can't accept parameters)
 
-// Dynamic route must be provided with parameters
 const product = route<ProductParams>('/products/:id');
-product(); // <- error
-
-// Parameters must match the interface type
+product(); // <- error (dynamic route requires parameters)
 product({ showComments: true }); // <- error (missing 'id')
 product({ id: 3, name: 'apple' }); // <- error (unexpected 'name')
 ```
@@ -186,6 +184,7 @@ If you want, it's also possible to use `route-descriptor` with plain JavaScript,
 ```js
 import { route } from 'route-descriptor';
 
+// Works in plain JS
 const product = route('/products/:id');
 const href = product({ id: 3 });
 ```
