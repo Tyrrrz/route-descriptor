@@ -104,8 +104,9 @@ const template = profile.template; // '/profile/:id/:name?'
 
 It's possible to use `route-descriptor` with pretty much any client-side routing library. For example, here is how to integrate it with [`react-router`](https://github.com/ReactTraining/react-router):
 
+- `./src/routes.ts`:
+
 ```ts
-// ./src/routes.ts
 import { route } from 'route-descriptor';
 
 interface ProductParams {
@@ -125,8 +126,9 @@ export default {
 };
 ```
 
+- `./src/App.tsx`:
+
 ```tsx
-// ./src/App.tsx
 import { Route, Switch, BrowserRouter, Link } from 'react-router-dom';
 import routes from './routes';
 
