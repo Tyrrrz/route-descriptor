@@ -8,9 +8,9 @@ type ParamsBase = object;
  */
 export interface RouteDescriptor {
   /**
-   * Template used to describe the route.
+   * Path of the route.
    */
-  readonly template: string;
+  readonly path: string;
 }
 
 /**
@@ -19,7 +19,7 @@ export interface RouteDescriptor {
 export interface StaticRouteDescriptor extends RouteDescriptor {
   /**
    * Resolves the URL of the route.
-   * For a static route, this simply returns the template.
+   * For a static route, this simply returns the path.
    */
   (): string;
 }
@@ -30,6 +30,8 @@ export interface StaticRouteDescriptor extends RouteDescriptor {
 export interface DynamicRouteDescriptor<T extends ParamsBase> extends RouteDescriptor {
   /**
    * Resolves the URL of the route based on the provided parameters.
+   * Parameters that match with template keys in the route path are
+   * injected directly, while others are appended as query parameters.
    */
   (params: T): string;
 }
@@ -37,25 +39,25 @@ export interface DynamicRouteDescriptor<T extends ParamsBase> extends RouteDescr
 /**
  * Creates a static route.
  *
- * @param template - route template (e.g. `/home`).
+ * @param path - route path (e.g. `/home`).
  */
-export function route(template: string): StaticRouteDescriptor;
+export function route(path: string): StaticRouteDescriptor;
 
 /**
  * Creates a dynamic a route.
  *
  * @param T - type of the object that represents route parameters.
- * @param template - route template (e.g. `/products/:id`).
+ * @param path - route path (e.g. `/products/:id`).
  */
-export function route<T extends ParamsBase>(template: string): DynamicRouteDescriptor<T>;
+export function route<T extends ParamsBase>(path: string): DynamicRouteDescriptor<T>;
 
 export function route<T extends ParamsBase>(
-  template: string
+  path: string
 ): StaticRouteDescriptor | DynamicRouteDescriptor<T> {
-  // Parse the template and extract keys
-  const templateTokens = parse(template);
+  // Parse the path and extract keys
+  const pathTokens = parse(path);
 
-  const templateKeys = templateTokens
+  const pathKeys = pathTokens
     .map((token) => {
       // Poor man's pattern matching
       const key = token as Key;
@@ -67,7 +69,7 @@ export function route<T extends ParamsBase>(
     })
     .filter((key) => !!key);
 
-  const templateResolve = tokensToFunction(templateTokens, {
+  const pathResolve = tokensToFunction(pathTokens, {
     encode: (value) => encodeURIComponent(value)
   });
 
@@ -75,16 +77,16 @@ export function route<T extends ParamsBase>(
   const descriptor = (params?: T) => {
     // Static route overload
     if (!params) {
-      return template;
+      return path;
     }
     // Dynamic route overload
     else {
       // Get the URL with route parameters resolved
-      const baseUrl = templateResolve(params);
+      const baseUrl = pathResolve(params);
 
       // Get the rest of parameters and add them as query
       const query = Object.entries(params)
-        .filter(([key]) => !templateKeys.includes(key))
+        .filter(([key]) => !pathKeys.includes(key))
         .map(([key, value]) => encodeURIComponent(key) + '=' + encodeURIComponent(value))
         .join('&');
 
@@ -92,8 +94,8 @@ export function route<T extends ParamsBase>(
     }
   };
 
-  // Preserve the original template string
-  descriptor.template = template;
+  // Preserve the original path string
+  descriptor.path = path;
 
   return descriptor;
 }

@@ -39,7 +39,7 @@ const href = product({ id: 3 }); // '/products/3'
 
 ### Routes with query parameters
 
-Any parameters that don't match with keys in the route template are automatically mapped as query parameters:
+Any parameters that don't match with keys in the route path are automatically mapped as query parameters:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -59,7 +59,7 @@ const href = product({
 
 ### Routes without parameters
 
-You can also create a static route, i.e. such that doesn't expect any parameters. Invoking it simply returns the original template:
+You can also create a static route, i.e. such that doesn't expect any parameters. Invoking it simply returns the path without any replacements:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -71,7 +71,7 @@ const href = home(); // '/home'
 
 ### Routes with optional positional parameters
 
-Some routes may have positional parameters which are optional. They need to be marked with the `?` modifier in the template:
+Some routes may have positional parameters which are optional. They need to be marked with the `?` modifier in the path template:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -88,16 +88,16 @@ const href = profile({
 }); // '/profile/13'
 ```
 
-### Retrieving the template
+### Retrieving the path
 
-Once the route is created, you can get the original template back too. This may be convenient when plugging `route-descriptor` into a routing library of your choice:
+Once the route is created, you can get the original path back too. This may be convenient when plugging `route-descriptor` into a routing library of your choice:
 
 ```ts
 import { route } from 'route-descriptor';
 
 const profile = route<ProfileParams>('/profile/:id/:name?');
 
-const template = profile.template; // '/profile/:id/:name?'
+const path = profile.path; // '/profile/:id/:name?'
 ```
 
 ### Combining with `react-router`
@@ -154,16 +154,16 @@ export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path={routes.profile.template} component={Profile} />
-        <Route path={routes.product.template} component={Product} />
-        <Route path={routes.home.template} component={Home} />
+        <Route path={routes.profile.path} component={Profile} />
+        <Route path={routes.product.path} component={Product} />
+        <Route path={routes.home.path} component={Home} />
       </Switch>
     </BrowserRouter>
   );
 }
 ```
 
-As you can see, the routes are defined in a single place (the `routes.ts` module) from which they referenced throughout the application. This makes changing the templates and route parameters easy in the future, as you don't have to worry about updating URLs in every anchor tag.
+As you can see, the routes are defined in a single place (the `routes.ts` module) from which they referenced throughout the application. This makes changing the paths and route parameters easy in the future, as you don't have to worry about updating URLs in every anchor tag.
 
 ### TypeScript integration
 

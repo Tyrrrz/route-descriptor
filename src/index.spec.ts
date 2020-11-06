@@ -113,14 +113,14 @@ describe('route()', () => {
     expect(url).toBe('/products/dogs%20and%20cats%20%3C3/3?color=black%20%26%20yellow');
   });
 
-  it('can return its template', () => {
+  it('can return its path', () => {
     // Arrange
     const profile = route<ProfilePageParams>('/profiles/:id/:name?');
 
     // Act
-    const template = profile.template;
+    const path = profile.path;
 
     // Assert
-    expect(template).toBe('/profiles/:id/:name?');
+    expect(path).toBe('/profiles/:id/:name?');
   });
 });
