@@ -85,6 +85,50 @@ describe('route()', () => {
     expect(url).toBe('/page');
   });
 
+  it('dynamic route can be resolved by passing an object that contains undefined values for positional parameters', () => {
+    // Arrange
+    const r = route<{ param1?: number; param2?: string }>('/page/:param1?');
+
+    // Act
+    const url = r({ param1: undefined });
+
+    // Assert
+    expect(url).toBe('/page');
+  });
+
+  it('dynamic route can be resolved by passing an object that contains null values for positional parameters', () => {
+    // Arrange
+    const r = route<{ param1?: number | null; param2?: string }>('/page/:param1?');
+
+    // Act
+    const url = r({ param1: null });
+
+    // Assert
+    expect(url).toBe('/page');
+  });
+
+  it('dynamic route can be resolved by passing an object that contains undefined values for query parameters', () => {
+    // Arrange
+    const r = route<{ param1?: number; param2?: string }>('/page/:param1?');
+
+    // Act
+    const url = r({ param1: 13, param2: undefined });
+
+    // Assert
+    expect(url).toBe('/page/13');
+  });
+
+  it('dynamic route can be resolved by passing an object that contains null values for query parameters', () => {
+    // Arrange
+    const r = route<{ param1?: number; param2?: string | null }>('/page/:param1?');
+
+    // Act
+    const url = r({ param1: 13, param2: null });
+
+    // Assert
+    expect(url).toBe('/page/13');
+  });
+
   it('dynamic route can be resolved while correctly encoding parameter values', () => {
     // Arrange
     const r = route<{ param1: string; param2: number; param3: string }>('/page/:param1/:param2');

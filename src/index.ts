@@ -86,7 +86,10 @@ export function route<T extends ParamsBase>(
 
       // Get the rest of parameters and add them as query
       const query = Object.entries(params)
-        .filter(([key]) => !pathKeys.includes(key))
+        .filter(
+          ([key, value]) =>
+            !pathKeys.includes(key) && typeof value !== 'undefined' && value !== null
+        )
         .map(([key, value]) => encodeURIComponent(key) + '=' + encodeURIComponent(value))
         .join('&');
 
