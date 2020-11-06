@@ -1,126 +1,113 @@
 import { route } from './index';
 
-interface ProductListParams {
-  page?: number;
-  itemsPerPage?: number;
-  filter?: string;
-}
-
-interface ProductPageParams {
-  id: number;
-  category: string;
-  color?: string;
-  viewFullDetails?: boolean;
-}
-
-interface ProfilePageParams {
-  id: number;
-  name?: string;
-}
-
 describe('route()', () => {
-  it('works without parameters if the route is static', () => {
+  it('static route can be resolved without passing parameters', () => {
     // Arrange
-    const home = route('/home');
+    const r = route('/page');
 
     // Act
-    const url = home();
+    const url = r();
 
     // Assert
-    expect(url).toBe('/home');
+    expect(url).toBe('/page');
   });
 
-  it('works with default parameters if the route has no required parameters', () => {
+  it('dynamic route can be resolved by passing positional parameters', () => {
     // Arrange
-    const products = route<ProductListParams>('/products');
+    const r = route<{ param1: string; param2: number }>('/page/:param1/:param2');
 
     // Act
-    const url = products({});
-
-    // Assert
-    expect(url).toBe('/products');
-  });
-
-  it('works with positional parameters', () => {
-    // Arrange
-    const product = route<ProductPageParams>('/products/:category/:id');
-
-    // Act
-    const url = product({
-      id: 3,
-      category: 'boxes'
+    const url = r({
+      param1: 'foo',
+      param2: 3
     });
 
     // Assert
-    expect(url).toBe('/products/boxes/3');
+    expect(url).toBe('/page/foo/3');
   });
 
-  it('works with query parameters', () => {
+  it('dynamic route can be resolved by passing query parameters', () => {
     // Arrange
-    const product = route<ProductListParams>('/products');
+    const r = route<{ param1: number; param2: string }>('/page');
 
     // Act
-    const url = product({
-      page: 14,
-      filter: 'big'
+    const url = r({
+      param1: 14,
+      param2: 'foo'
     });
 
     // Assert
-    expect(url).toBe('/products?page=14&filter=big');
+    expect(url).toBe('/page?param1=14&param2=foo');
   });
 
-  it('works with both positional and query parameters', () => {
+  it('dynamic route can be resolved by passing both positional and query parameters', () => {
     // Arrange
-    const product = route<ProductPageParams>('/products/:category/:id');
+    const r = route<{
+      param1: string;
+      param2: number;
+      param3: string;
+      param4: boolean;
+    }>('/page/:param1/:param2');
 
     // Act
-    const url = product({
-      id: 3,
-      category: 'boxes',
-      color: 'red',
-      viewFullDetails: true
+    const url = r({
+      param1: 'foo',
+      param2: 3,
+      param3: 'bar',
+      param4: true
     });
 
     // Assert
-    expect(url).toBe('/products/boxes/3?color=red&viewFullDetails=true');
+    expect(url).toBe('/page/foo/3?param3=bar&param4=true');
   });
 
-  it('works with some of the optional positional parameters omitted', () => {
+  it('dynamic route can be resolved while omitting some of the optional positional parameters', () => {
     // Arrange
-    const profile = route<ProfilePageParams>('/profiles/:id/:name?');
+    const r = route<{ param1: number; param2?: string }>('/page/:param1/:param2?');
 
     // Act
-    const url = profile({
-      id: 3
+    const url = r({
+      param1: 3
     });
 
     // Assert
-    expect(url).toBe('/profiles/3');
+    expect(url).toBe('/page/3');
   });
 
-  it('correctly encodes parameters', () => {
+  it('dynamic route can be resolved by passing an empty object if all parameters are optional', () => {
     // Arrange
-    const product = route<ProductPageParams>('/products/:category/:id');
+    const r = route<{ param1?: number; param2?: string }>('/page/:param1?');
 
     // Act
-    const url = product({
-      id: 3,
-      category: 'dogs and cats <3',
-      color: 'black & yellow'
+    const url = r({});
+
+    // Assert
+    expect(url).toBe('/page');
+  });
+
+  it('dynamic route can be resolved while correctly encoding parameter values', () => {
+    // Arrange
+    const r = route<{ param1: string; param2: number; param3: string }>('/page/:param1/:param2');
+
+    // Act
+    const url = r({
+      param1: 'dogs and cats <3',
+      param2: 3,
+      param3: 'black & yellow'
     });
 
     // Assert
-    expect(url).toBe('/products/dogs%20and%20cats%20%3C3/3?color=black%20%26%20yellow');
+    expect(url).toBe('/page/dogs%20and%20cats%20%3C3/3?param3=black%20%26%20yellow');
   });
 
-  it('can return its path', () => {
+  it('dynamic route can return its own path', () => {
     // Arrange
-    const profile = route<ProfilePageParams>('/profiles/:id/:name?');
+    const r = route<{ param1: number; param2?: string }>('/page/:param1/:param2?');
 
     // Act
-    const path = profile.path;
+    const path = r.path;
 
     // Assert
-    expect(path).toBe('/profiles/:id/:name?');
+    expect(path).toBe('/page/:param1/:param2?');
   });
 });
