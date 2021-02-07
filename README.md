@@ -6,24 +6,39 @@
 [![Downloads](https://img.shields.io/npm/dm/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
-This package provides an interface to statically represent routing configuration in your application. It lets you establish a single source of truth for generating links, which avoids code duplication and makes refactoring easier. **Works best with TypeScript.**
+This package provides the means to statically represent routes, helping you establish a single source of truth for generating links inside your application.
+
+**Works best with TypeScript.**
 
 ## Download
 
 - [npm](http://npmjs.com/package/route-descriptor): `npm i route-descriptor`
 
-## Features
-
-- Supports static and dynamic routes
-- Supports positional and query parameters
-- Parameter validation via TypeScript
-- Works in browser and NodeJS
-
 ## Usage
 
-### Routes with parameters
+The package's main entry point is the `route(...)` function exported from `route-descriptor` module.
+You can use it to create a route descriptor by specifying the route's path and the type that encapsulates its parameters.
+The resulting route descriptor is itself another function that accepts the route's parameters and uses them to resolve the matching URL.
 
-The following example creates a dynamic route called `product` with expected parameters declared in `ProductParams`. The route itself is a function that can be invoked to resolve the actual URL:
+### Static route (no parameters)
+
+A static route is a route that has no parameters and, as a result, always has the same URL.
+To create a descriptor for a static route, call `route(...)` with a plain path and without specifying any generic arguments:
+
+```ts
+import { route } from 'route-descriptor';
+
+const home = route('/home');
+
+const href = home(); // '/home'
+```
+
+A descriptor for a static route is effectively a glorified constant and is only useful in combination with dynamic routes.
+
+### Dynamic route (with parameters)
+
+A dynamic route can have different URLs depending on the input parameters.
+In order to create a descriptor for a dynamic route, call `route(...)` with a path template and specify the type that encapsulates the parameters it accepts:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -37,9 +52,11 @@ const product = route<ProductParams>('/products/:id');
 const href = product({ id: 3 }); // '/products/3'
 ```
 
-### Routes with query parameters
+Note that a dynamic route descriptor always expects an object with parameters, so calling it without passing one will result in a compilation error.
+Similarly, passing an object that doesn't match the type specified as the generic argument will also produce an error.
 
-Any parameters that don't match with keys in the route path are automatically mapped as query parameters:
+When resolving the URL, the route descriptor will try to match the parameter names with template placeholders in the path.
+If a parameter doesn't match with any of the placeholders, it will be added as a _query parameter_ instead:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -57,40 +74,10 @@ const href = product({
 }); // '/products/3?showComments=true'
 ```
 
-### Routes without parameters
+### Getting the original path
 
-You can also create a static route, i.e. such that doesn't expect any parameters. Invoking it simply returns the path without any replacements:
-
-```ts
-import { route } from 'route-descriptor';
-
-const home = route('/home');
-
-const href = home(); // '/home'
-```
-
-### Routes with optional positional parameters
-
-Some routes may have positional parameters which are optional. They need to be marked with the `?` modifier in the path template:
-
-```ts
-import { route } from 'route-descriptor';
-
-interface ProfileParams {
-  id: number;
-  name?: string;
-}
-
-const profile = route<ProfileParams>('/profile/:id/:name?');
-
-const href = profile({
-  id: 13
-}); // '/profile/13'
-```
-
-### Retrieving the path
-
-Once the route is created, you can get the original path back too. This may be convenient when plugging `route-descriptor` into a routing library of your choice:
+Once the descriptor is created, it may be useful to retrieve the path template once again, for example to feed it into a router library.
+You can do that by accessing the `path` field on the descriptor:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -100,13 +87,17 @@ const profile = route<ProfileParams>('/profile/:id/:name?');
 const path = profile.path; // '/profile/:id/:name?'
 ```
 
-### Combining with `react-router`
+### Combining with React Router
 
-It's possible to use `route-descriptor` with pretty much any client-side routing library. For example, here is how to integrate it with [`react-router`](https://github.com/ReactTraining/react-router):
+It's possible to use `route-descriptor` with virtually any client-side routing library.
+For example, here is how to integrate it with [React Router](https://github.com/ReactTraining/react-router):
 
 - `./src/routes.ts`:
 
 ```ts
+// This module serves as a single source of truth
+// for routes in our application.
+
 import { route } from 'route-descriptor';
 
 interface ProductParams {
@@ -133,6 +124,9 @@ import { Route, Switch, BrowserRouter, Link } from 'react-router-dom';
 import routes from './routes';
 
 function Home() {
+  // To resolve a link for a route, we need to pass
+  // the parameters that the route expects.
+  
   return (
     <div>
       <Link to={routes.home()}>Home</Link>
@@ -151,6 +145,9 @@ function Profile() {
 }
 
 export default function App() {
+  // We can use the `path` field to retrieve the original
+  // path template and feed it to react-router.
+
   return (
     <BrowserRouter>
       <Switch>
@@ -163,11 +160,10 @@ export default function App() {
 }
 ```
 
-As you can see, the routes are defined in a single place (the `routes.ts` module) from which they referenced throughout the application. This makes changing the paths and route parameters easy in the future, as you don't have to worry about updating URLs in every anchor tag.
-
 ### TypeScript integration
 
-This package is most useful when paired with TypeScript, as it provides static validation for parameters. For example, all of the following incorrect usages produce errors during compilation:
+This package is most useful when paired with TypeScript, as it provides static validation for parameters.
+For example, all of the following incorrect usages produce errors during compilation:
 
 ```ts
 import { route } from 'route-descriptor';
@@ -181,7 +177,7 @@ product({ showComments: true }); // <- error (missing 'id')
 product({ id: 3, name: 'apple' }); // <- error (unexpected 'name')
 ```
 
-If you want, it's also possible to use `route-descriptor` with plain JavaScript, which is still useful for establishing a single source of truth, but doesn't help with parameter validation:
+If you want, it's also possible to use `route-descriptor` with plain JavaScript, which is still useful to achieve a single source of truth, but doesn't help with parameter validation:
 
 ```js
 import { route } from 'route-descriptor';
