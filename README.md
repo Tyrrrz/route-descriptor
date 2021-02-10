@@ -12,7 +12,7 @@ This package provides the means to statically represent routes, helping you esta
 
 ## Download
 
-- [npm](http://npmjs.com/package/route-descriptor): `npm i route-descriptor`
+📦 [npm](http://npmjs.com/package/route-descriptor): `npm i route-descriptor`
 
 ## Usage
 
