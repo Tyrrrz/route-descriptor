@@ -6,7 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
-This package provides the means to statically represent routes, helping you establish a single source of truth for generating links inside your application.
+This package provides the means to statically represent routes, helping you establish single source of truth for generating links inside your application.
 
 **Works best with TypeScript.**
 
@@ -52,10 +52,10 @@ const product = route<ProductParams>('/products/:id');
 const href = product({ id: 3 }); // '/products/3'
 ```
 
-Note that a dynamic route descriptor always expects an object with parameters, so calling it without passing one will result in a compilation error.
+> Note that a dynamic route descriptor always expects an object with parameters, so calling it without passing one will result in a compilation error.
 Similarly, passing an object that doesn't match the type specified as the generic argument will also produce an error.
 
-When resolving the URL, the route descriptor will try to match the parameter names with template placeholders in the path.
+When resolving the URL, the route descriptor will try to match the parameter names with placeholders in the path template.
 If a parameter doesn't match with any of the placeholders, it will be added as a _query parameter_ instead:
 
 ```ts
@@ -177,7 +177,7 @@ product({ showComments: true }); // <- error (missing 'id')
 product({ id: 3, name: 'apple' }); // <- error (unexpected 'name')
 ```
 
-If you want, it's also possible to use `route-descriptor` with plain JavaScript, which is still useful to achieve a single source of truth, but doesn't help with parameter validation:
+If you want, it's also possible to use `route-descriptor` with plain JavaScript, which is still useful to achieve single source of truth, but doesn't help with parameter validation:
 
 ```js
 import { route } from 'route-descriptor';
