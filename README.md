@@ -6,6 +6,8 @@
 [![Downloads](https://img.shields.io/npm/dm/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
+✅ **Project status: active**.
+
 This package provides the means to statically represent routes, which helps establish a single source of truth for generating links inside an application.
 
 **Works best with TypeScript.**
