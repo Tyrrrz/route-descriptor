@@ -4,7 +4,7 @@
   "description": "Single source of truth for routing in your application",
   "repository": "https://github.com/Tyrrrz/route-descriptor",
   "author": {
-    "name": "Alexey Golub",
+    "name": "Oleksii Holub",
     "url": "https://tyrrrz.me"
   },
   "license": "MIT",
