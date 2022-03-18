@@ -1,6 +1,5 @@
 import { Key, parse, tokensToFunction } from 'path-to-regexp';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type ParamsBase = object;
 
 /**
