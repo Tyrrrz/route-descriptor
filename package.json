@@ -21,6 +21,11 @@
   "files": [
     "build"
   ],
+  "scripts": {
+    "build": "rimraf ./build && tsc -p tsconfig.build.esm.json && tsc -p tsconfig.build.cjs.json",
+    "test": "jest",
+    "lint": "eslint **/*.{js,jsx,ts,tsx} --fix"
+  },
   "dependencies": {
     "path-to-regexp": "^6.2.0"
   },
@@ -37,11 +42,6 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.2"
-  },
-  "scripts": {
-    "build": "rimraf ./build && tsc -p tsconfig.build.esm.json && tsc -p tsconfig.build.cjs.json",
-    "test": "jest",
-    "lint": "eslint **/*.{js,jsx,ts,tsx} --fix"
   },
   "jest": {
     "transform": {
