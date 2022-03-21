@@ -1,22 +1,23 @@
 # route-descriptor
 
-[![Build](https://github.com/Tyrrrz/route-descriptor/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/route-descriptor/actions)
-[![Coverage](https://codecov.io/gh/Tyrrrz/route-descriptor/branch/master/graph/badge.svg)](https://codecov.io/gh/Tyrrrz/route-descriptor)
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
+[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/route-descriptor/CI/master)](https://github.com/Tyrrrz/route-descriptor/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/route-descriptor/master)](https://codecov.io/gh/Tyrrrz/route-descriptor)
 [![Version](https://img.shields.io/npm/v/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Downloads](https://img.shields.io/npm/dm/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
-[![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
-[![Fuck Russia](https://img.shields.io/badge/fuck-russia-black.svg)](https://twitter.com/Tyrrrz/status/1495972128977571848)
+[![Donate](https://img.shields.io/badge/donate-$$$-8a2be2.svg)](https://tyrrrz.me/donate)
+[![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
-✅ **Project status: active**. [What does it mean?](https://github.com/Tyrrrz/shared/blob/master/docs/project-status.md)
+✅ **Project status: active**<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
 This package provides the means to statically represent routes, which helps establish a single source of truth for generating links inside an application.
 
-**Works best with TypeScript.**
+> 💡 This library works best with TypeScript.
 
-## Download
+## Install
 
-📦 [npm](http://npmjs.com/package/route-descriptor): `npm i route-descriptor`
+- 📦 [npm](http://npmjs.com/package/route-descriptor): `npm i route-descriptor`
 
 ## Usage
 
