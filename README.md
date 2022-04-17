@@ -167,9 +167,9 @@ import { route } from 'route-descriptor';
 const home = route('/home');
 
 home({ id: 5 }); // <- error (static route can't accept parameters)
+```
 
-// ----
-
+```ts
 interface ProductParams {
   id: number;
   showComments?: boolean;
