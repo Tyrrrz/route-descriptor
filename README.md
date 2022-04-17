@@ -55,7 +55,7 @@ const href = product({ id: 3 }); // '/products/3'
 ```
 
 To resolve the URL, the descriptor will try to match the parameter names with placeholders in the path template.
-If some of the parameters don't match with any of the placeholders, they will be added as _query parameters_ instead:
+If a parameter doesn't match with any of the placeholders, it will be added as a _query parameter_ instead:
 
 ```ts
 import { route } from 'route-descriptor';
