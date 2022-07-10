@@ -5,35 +5,35 @@ type ParamsBase = object;
 /**
  * Describes a route.
  */
-export interface RouteDescriptor {
+export type RouteDescriptor = {
   /**
    * Path of the route.
    */
   readonly path: string;
-}
+};
 
 /**
  * Describes a route that does not accept parameters.
  */
-export interface StaticRouteDescriptor extends RouteDescriptor {
+export type StaticRouteDescriptor = RouteDescriptor & {
   /**
    * Resolves the URL of the route.
    * For a static route, this simply returns the path.
    */
   (): string;
-}
+};
 
 /**
  * Describes a route that accepts parameters.
  */
-export interface DynamicRouteDescriptor<T extends ParamsBase> extends RouteDescriptor {
+export type DynamicRouteDescriptor<T extends ParamsBase> = RouteDescriptor & {
   /**
    * Resolves the URL of the route based on the provided parameters.
    * Parameters that match with template keys in the route path are
    * injected directly, while others are appended as query parameters.
    */
   (params: T): string;
-}
+};
 
 /**
  * Creates a static route.
@@ -45,7 +45,7 @@ export function route(path: string): StaticRouteDescriptor;
 /**
  * Creates a dynamic a route.
  *
- * @param T - type of the object that represents route parameters.
+ * @template T - type of the object that represents route parameters.
  * @param path - route path (e.g. `/products/:id`).
  */
 export function route<T extends ParamsBase>(path: string): DynamicRouteDescriptor<T>;

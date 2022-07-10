@@ -45,7 +45,7 @@ In order to create a descriptor for a dynamic route, call `route(...)` with a pa
 ```ts
 import { route } from 'route-descriptor';
 
-interface ProductParams {
+type ProductParams = {
   id: number;
 }
 
@@ -60,7 +60,7 @@ If a parameter doesn't match with any of the placeholders, it will be added as a
 ```ts
 import { route } from 'route-descriptor';
 
-interface ProductParams {
+type ProductParams = {
   id: number;
   showComments?: boolean;
 }
@@ -97,12 +97,12 @@ For example, here is how to integrate it with [React Router](https://github.com/
 
 import { route } from 'route-descriptor';
 
-interface ProductParams {
+type ProductParams = {
   id: number;
   showComments?: boolean;
 }
 
-interface ProfileParams {
+type ProfileParams = {
   id: number;
   name?: string;
 }
@@ -122,7 +122,7 @@ import routes from './routes';
 
 function Home() {
   // To resolve route link, pass the parameters that the route expects
-  
+
   return (
     <div>
       <Link to={routes.home()}>Home</Link>
@@ -170,7 +170,7 @@ home({ id: 5 }); // <- error (static route can't accept parameters)
 ```
 
 ```ts
-interface ProductParams {
+type ProductParams = {
   id: number;
   showComments?: boolean;
 }
