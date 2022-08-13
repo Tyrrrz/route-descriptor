@@ -1,7 +1,7 @@
 # route-descriptor
 
 [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
-[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/route-descriptor/CI/master)](https://github.com/Tyrrrz/route-descriptor/actions)
+[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/route-descriptor/main/master)](https://github.com/Tyrrrz/route-descriptor/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/route-descriptor/master)](https://codecov.io/gh/Tyrrrz/route-descriptor)
 [![Version](https://img.shields.io/npm/v/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)
 [![Downloads](https://img.shields.io/npm/dm/route-descriptor.svg)](http://npmjs.com/package/route-descriptor)

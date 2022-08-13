@@ -1,0 +1,13 @@
+name: main
+
+on: [push, pull_request]
+
+jobs:
+  main:
+    uses: Tyrrrz/.github/.github/workflows/npm.yml@master
+    with:
+      node-version: 18
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
